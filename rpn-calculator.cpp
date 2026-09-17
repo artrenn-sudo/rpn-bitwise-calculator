@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <iostream>
 #include <memory>
+#include <stack>
 #include <string>
 #include <unordered_map>
 #include <vector>
