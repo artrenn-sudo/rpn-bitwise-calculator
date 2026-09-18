@@ -100,6 +100,18 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0) {
             stk.push(res);      // Push result back onto stack
             return make_shared<uint16_t>(stk.top()); // Return pointer to new top
         }
+        case cmd_or: {          // Handle cmd_or: a | b
+            if (stk.size() < 2) { // Require at least two operands
+                return nullptr; // Return nullptr if insufficient operands
+            }
+            uint16_t const a = stk.top(); // Pop first operand
+            stk.pop();          // Remove first operand
+            uint16_t const b = stk.top(); // Pop second operand
+            stk.pop();          // Remove second operand
+            uint16_t const res = static_cast<uint16_t>(a | b); // Compute bitwise OR
+            stk.push(res);      // Push result back onto stack
+            return make_shared<uint16_t>(stk.top()); // Return pointer to new top
+        }
         default:                // Default case for unhandled commands
             break;              // Exit switch block
     }
