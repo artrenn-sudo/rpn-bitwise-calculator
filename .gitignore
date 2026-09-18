@@ -1,0 +1,6 @@
+# Ignore executables
+*.exe
+
+# Ignore build artifacts and object files
+*.o
+*.obj
