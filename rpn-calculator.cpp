@@ -38,7 +38,7 @@ enum command : uint16_t {
     cmd_or,
     cmd_and,
     cmd_add,
-};
+    };
 vector<string> command_name = {"cmd_enter",       "cmd_clear", "cmd_pop", "cmd_top", "cmd_left_shift",
                                "cmd_right_shift", "cmd_or",    "cmd_and", "cmd_add"};
 uint8_t const width = 16U;
@@ -74,93 +74,93 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0) {
             if (stk.empty()) {  // Check if stack has any elements
                 return nullptr; // Return nullptr if stack is empty
             }
-            return make_shared<uint16_t>(stk.top()); // Return pointer to top without popping
+            return make_shared<uint16_t>(stk.top());    // Return pointer to top without popping
         }
-        case cmd_left_shift: {  // Handle cmd_left_shift: b << a
-            if (stk.size() < 2) { // Require at least two operands
-                return nullptr; // Return nullptr if insufficient operands
+        case cmd_left_shift: {                          // Handle cmd_left_shift: b << a
+            if (stk.size() < 2) {                       // Require at least two operands
+                return nullptr;                         // Return nullptr if insufficient operands
             }
-            uint16_t const a = stk.top(); // First popped is shift count
-            stk.pop();          // Remove shift count from stack
-            uint16_t const b = stk.top(); // Second popped is base value
-            stk.pop();          // Remove base value from stack
+            uint16_t const a = stk.top();               // First popped is shift count
+            stk.pop();                                  // Remove shift count from stack
+            uint16_t const b = stk.top();               // Second popped is base value
+            stk.pop();                                  // Remove base value from stack
             uint16_t const res = static_cast<uint16_t>(b << a); // Perform bitwise left shift
-            stk.push(res);      // Push result back onto stack
-            return make_shared<uint16_t>(stk.top()); // Return pointer to new top
+            stk.push(res);                              // Push result back onto stack
+            return make_shared<uint16_t>(stk.top());    // Return pointer to new top
         }
-        case cmd_right_shift: { // Handle cmd_right_shift: b >> a
-            if (stk.size() < 2) { // Require at least two operands
-                return nullptr; // Return nullptr if insufficient operands
+        case cmd_right_shift: {                         // Handle cmd_right_shift: b >> a
+            if (stk.size() < 2) {                       // Require at least two operands
+                return nullptr;                         // Return nullptr if insufficient operands
             }
-            uint16_t const a = stk.top(); // First popped is shift count
-            stk.pop();          // Remove shift count from stack
-            uint16_t const b = stk.top(); // Second popped is base value
-            stk.pop();          // Remove base value from stack
+            uint16_t const a = stk.top();               // First popped is shift count
+            stk.pop();                                  // Remove shift count from stack
+            uint16_t const b = stk.top();               // Second popped is base value
+            stk.pop();                                  // Remove base value from stack
             uint16_t const res = static_cast<uint16_t>(b >> a); // Perform bitwise right shift
-            stk.push(res);      // Push result back onto stack
-            return make_shared<uint16_t>(stk.top()); // Return pointer to new top
+            stk.push(res);                              // Push result back onto stack
+            return make_shared<uint16_t>(stk.top());    // Return pointer to new top
         }
-        case cmd_or: {          // Handle cmd_or: a | b
-            if (stk.size() < 2) { // Require at least two operands
-                return nullptr; // Return nullptr if insufficient operands
+        case cmd_or: {                                  // Handle cmd_or: a | b
+            if (stk.size() < 2) {                       // Require at least two operands
+                return nullptr;                         // Return nullptr if insufficient operands
             }
-            uint16_t const a = stk.top(); // Pop first operand
-            stk.pop();          // Remove first operand
-            uint16_t const b = stk.top(); // Pop second operand
-            stk.pop();          // Remove second operand
-            uint16_t const res = static_cast<uint16_t>(a | b); // Compute bitwise OR
-            stk.push(res);      // Push result back onto stack
-            return make_shared<uint16_t>(stk.top()); // Return pointer to new top
+            uint16_t const a = stk.top();               // Pop first operand
+            stk.pop();                                  // Remove first operand
+            uint16_t const b = stk.top();               // Pop second operand
+            stk.pop();                                  // Remove second operand
+            uint16_t const res = static_cast<uint16_t>(a | b);  // Compute bitwise OR
+            stk.push(res);                              // Push result back onto stack
+            return make_shared<uint16_t>(stk.top());    // Return pointer to new top
         }
-        case cmd_and: {         // Handle cmd_and: a & b
-            if (stk.size() < 2) { // Require at least two operands
-                return nullptr; // Return nullptr if insufficient operands
+        case cmd_and: {                                 // Handle cmd_and: a & b
+            if (stk.size() < 2) {                       // Require at least two operands
+                return nullptr;                         // Return nullptr if insufficient operands
             }
-            uint16_t const a = stk.top(); // Pop first operand
-            stk.pop();          // Remove first operand
-            uint16_t const b = stk.top(); // Pop second operand
-            stk.pop();          // Remove second operand
-            uint16_t const res = static_cast<uint16_t>(a & b); // Compute bitwise AND
-            stk.push(res);      // Push result back onto stack
-            return make_shared<uint16_t>(stk.top()); // Return pointer to new top
+            uint16_t const a = stk.top();               // Pop first operand
+            stk.pop();                                  // Remove first operand
+            uint16_t const b = stk.top();               // Pop second operand
+            stk.pop();                                  // Remove second operand
+            uint16_t const res = static_cast<uint16_t>(a & b);  // Compute bitwise AND
+            stk.push(res);                              // Push result back onto stack
+            return make_shared<uint16_t>(stk.top());    // Return pointer to new top
         }
-        case cmd_add: {         // Handle cmd_add: bitwise addition a + b
-            if (stk.size() < 2) { // Require at least two operands
-                return nullptr; // Return nullptr if insufficient operands
+        case cmd_add: {                                 // Handle cmd_add: bitwise addition a + b
+            if (stk.size() < 2) {                       // Require at least two operands
+                return nullptr;                         // Return nullptr if insufficient operands
             }
-            uint16_t const a = stk.top(); // Pop first operand
-            stk.pop();          // Remove first operand
-            uint16_t const b = stk.top(); // Pop second operand
-            stk.pop();          // Remove second operand
+            uint16_t const a = stk.top();               // Pop first operand
+            stk.pop();                                  // Remove first operand
+            uint16_t const b = stk.top();               // Pop second operand
+            stk.pop();                                  // Remove second operand
 
-            uint16_t x = a;     // First operand for bitwise adder
-            uint16_t y = b;     // Second operand (carries)
-            bool overflow = false; // Flag to track 16-bit overflow
+            uint16_t x = a;                             // First operand for bitwise adder
+            uint16_t y = b;                             // Second operand (carries)
+            bool overflow = false;                      // Flag to track 16-bit overflow
 
-            while (y != 0) {    // Loop until all carry bits are resolved
-                uint16_t const carry = static_cast<uint16_t>(x & y); // Common set bits form carry
-                if ((carry & 0x8000U) != 0) { // Carry out of bit 15 exceeds 16 bits
-                    overflow = true; // Set overflow flag
-                    break;      // Stop addition
+            while (y != 0) {                            // Loop until all carry bits are resolved
+                uint16_t const carry = static_cast<uint16_t>(x & y);    // Common set bits form carry
+                if ((carry & 0x8000U) != 0) {                           // Carry out of bit 15 exceeds 16 bits
+                    overflow = true;                                    // Set overflow flag
+                    break;                                              // Stop addition
                 }
-                x = static_cast<uint16_t>(x ^ y); // Sum without carry
-                y = static_cast<uint16_t>(carry << 1); // Shift carry to next bit
+                x = static_cast<uint16_t>(x ^ y);       // Sum without carry
+                y = static_cast<uint16_t>(carry << 1);  // Shift carry to next bit
             }
 
-            if (overflow) {     // If addition overflowed 16-bit limit
-                stk.push(b);    // Restore second operand to maintain stack state
-                stk.push(a);    // Restore first operand to maintain stack state
-                return nullptr; // Return nullptr on overflow
+            if (overflow) {                     // If addition overflowed 16-bit limit
+                stk.push(b);                    // Restore second operand to maintain stack state
+                stk.push(a);                    // Restore first operand to maintain stack state
+                return nullptr;                 // Return nullptr on overflow
             }
 
-            stk.push(x);        // Push sum result onto stack
+            stk.push(x);                        // Push sum result onto stack
             return make_shared<uint16_t>(stk.top()); // Return pointer to new top
         }
-        default:                // Default case for unhandled commands
-            break;              // Exit switch block
+        default:                            // Default case for unhandled commands
+            break;                          // Exit switch block
     }
 
-    return nullptr;             // Return nullptr if no value produced
+    return nullptr;                         // Return nullptr if no value produced
 }
 
 /*
