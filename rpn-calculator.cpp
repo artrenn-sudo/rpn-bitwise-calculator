@@ -70,6 +70,12 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0) {
             }
             return make_shared<uint16_t>(stk.top()); // Return pointer to the new top value
         }
+        case cmd_top: {         // Handle cmd_top: peek at top element
+            if (stk.empty()) {  // Check if stack has any elements
+                return nullptr; // Return nullptr if stack is empty
+            }
+            return make_shared<uint16_t>(stk.top()); // Return pointer to top without popping
+        }
         default:                // Default case for unhandled commands
             break;              // Exit switch block
     }
