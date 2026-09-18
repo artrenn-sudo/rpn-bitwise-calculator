@@ -124,6 +124,38 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0) {
             stk.push(res);      // Push result back onto stack
             return make_shared<uint16_t>(stk.top()); // Return pointer to new top
         }
+        case cmd_add: {         // Handle cmd_add: bitwise addition a + b
+            if (stk.size() < 2) { // Require at least two operands
+                return nullptr; // Return nullptr if insufficient operands
+            }
+            uint16_t const a = stk.top(); // Pop first operand
+            stk.pop();          // Remove first operand
+            uint16_t const b = stk.top(); // Pop second operand
+            stk.pop();          // Remove second operand
+
+            uint16_t x = a;     // First operand for bitwise adder
+            uint16_t y = b;     // Second operand (carries)
+            bool overflow = false; // Flag to track 16-bit overflow
+
+            while (y != 0) {    // Loop until all carry bits are resolved
+                uint16_t const carry = static_cast<uint16_t>(x & y); // Common set bits form carry
+                if ((carry & 0x8000U) != 0) { // Carry out of bit 15 exceeds 16 bits
+                    overflow = true; // Set overflow flag
+                    break;      // Stop addition
+                }
+                x = static_cast<uint16_t>(x ^ y); // Sum without carry
+                y = static_cast<uint16_t>(carry << 1); // Shift carry to next bit
+            }
+
+            if (overflow) {     // If addition overflowed 16-bit limit
+                stk.push(b);    // Restore second operand to maintain stack state
+                stk.push(a);    // Restore first operand to maintain stack state
+                return nullptr; // Return nullptr on overflow
+            }
+
+            stk.push(x);        // Push sum result onto stack
+            return make_shared<uint16_t>(stk.top()); // Return pointer to new top
+        }
         default:                // Default case for unhandled commands
             break;              // Exit switch block
     }
