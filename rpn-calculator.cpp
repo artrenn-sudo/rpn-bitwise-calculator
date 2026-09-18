@@ -56,6 +56,20 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0) {
             stk.push(value);    // Push input value onto the stack
             return make_shared<uint16_t>(stk.top()); // Return pointer to the new top value
         }
+        case cmd_clear: {       // Handle cmd_clear: empty the stack
+            stk = stack<uint16_t>(); // Reset stack with a new empty instance
+            return nullptr;     // Return nullptr as required
+        }
+        case cmd_pop: {         // Handle cmd_pop: remove top element
+            if (stk.empty()) {  // Check if stack is empty before popping
+                return nullptr; // Return nullptr if nothing to pop
+            }
+            stk.pop();          // Pop the top element
+            if (stk.empty()) {  // Check if stack became empty after pop
+                return nullptr; // Return nullptr if no elements remain
+            }
+            return make_shared<uint16_t>(stk.top()); // Return pointer to the new top value
+        }
         default:                // Default case for unhandled commands
             break;              // Exit switch block
     }
