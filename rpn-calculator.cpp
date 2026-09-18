@@ -50,6 +50,16 @@ uint8_t const width = 16U;
  */
 shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0) {
     static stack<uint16_t> stk;
+
+    switch (cmd) {
+        case cmd_enter: {
+            stk.push(value);
+            return make_shared<uint16_t>(stk.top());
+        }
+        default:
+            break;
+    }
+
     return nullptr;
 }
 
