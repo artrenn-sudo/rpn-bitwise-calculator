@@ -76,6 +76,18 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0) {
             }
             return make_shared<uint16_t>(stk.top()); // Return pointer to top without popping
         }
+        case cmd_left_shift: {  // Handle cmd_left_shift: b << a
+            if (stk.size() < 2) { // Require at least two operands
+                return nullptr; // Return nullptr if insufficient operands
+            }
+            uint16_t const a = stk.top(); // First popped is shift count
+            stk.pop();          // Remove shift count from stack
+            uint16_t const b = stk.top(); // Second popped is base value
+            stk.pop();          // Remove base value from stack
+            uint16_t const res = static_cast<uint16_t>(b << a); // Perform bitwise left shift
+            stk.push(res);      // Push result back onto stack
+            return make_shared<uint16_t>(stk.top()); // Return pointer to new top
+        }
         default:                // Default case for unhandled commands
             break;              // Exit switch block
     }
