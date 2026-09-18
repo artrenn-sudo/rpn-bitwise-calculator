@@ -7,7 +7,7 @@
 #include <iomanip>
 #include <iostream>
 #include <memory>
-#include <stack>
+#include <stack>             // Provide std::stack container for RPN operations
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -49,18 +49,18 @@ uint8_t const width = 16U;
  * Students should create or add any functions or classes they may need.
  */
 shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0) {
-    static stack<uint16_t> stk;
+    static stack<uint16_t> stk; // Persist stack state across multiple function calls
 
-    switch (cmd) {
-        case cmd_enter: {
-            stk.push(value);
-            return make_shared<uint16_t>(stk.top());
+    switch (cmd) {              // Dispatch commands in O(1) time
+        case cmd_enter: {       // Handle cmd_enter: push value and return top
+            stk.push(value);    // Push input value onto the stack
+            return make_shared<uint16_t>(stk.top()); // Return pointer to the new top value
         }
-        default:
-            break;
+        default:                // Default case for unhandled commands
+            break;              // Exit switch block
     }
 
-    return nullptr;
+    return nullptr;             // Return nullptr if no value produced
 }
 
 /*
